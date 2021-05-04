@@ -10,6 +10,9 @@ and
 [BME680](https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors-bme680/)
 sensors in Elixir.
 
+<div style="height:200px;background-position:center center;background-repeat:no-repeat;background-image:url(https://www.bosch-sensortec.com/media/boschsensortec/products/environmental_sensors/pressure_sensors/bosch-sensortec_website-relaunch_stage_bmp280_res_800x450.jpg)">
+</div>
+
 ## Usage
 
 Here's an example use (most sensors are at address 0x77, but some are at 0x76):
