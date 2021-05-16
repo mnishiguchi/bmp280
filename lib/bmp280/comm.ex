@@ -8,7 +8,7 @@ defmodule BMP280.Comm do
 
   @spec sensor_type(Transport.t()) :: {:ok, BMP280.sensor_type()} | {:error, any()}
   def sensor_type(transport) do
-    case Transport.read(transport, @id_register, 1) do
+    case Transport.I2C.read(transport, @id_register, 1) do
       {:ok, <<id>>} -> {:ok, id_to_type(id)}
       error -> error
     end
@@ -24,7 +24,7 @@ defmodule BMP280.Comm do
   """
   @spec reset(BMP280.Transport.t()) :: :ok | {:error, any}
   def reset(transport) do
-    with :ok <- Transport.write(transport, @reset_register, <<0xB6>>),
+    with :ok <- Transport.I2C.write(transport, @reset_register, <<0xB6>>),
          do: Process.sleep(10)
   end
 end

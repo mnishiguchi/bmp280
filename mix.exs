@@ -10,6 +10,7 @@ defmodule BMP280.MixProject do
       version: @version,
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
+      elixirc_paths: code(Mix.env()),
       deps: deps(),
       dialyzer: dialyzer(),
       docs: docs(),
@@ -48,11 +49,15 @@ defmodule BMP280.MixProject do
     }
   end
 
+  defp code(:test), do: ["lib", "test/support"]
+  defp code(_), do: ["lib"]
+
   defp deps do
     [
       {:circuits_i2c, "~> 0.3"},
       {:ex_doc, "~> 0.22", only: :docs, runtime: false},
-      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:mox, "~> 1.0", only: [:test]}
     ]
   end
 

@@ -16,7 +16,7 @@ defmodule BMP280.BMP280Comm do
     # x16 oversampling
     osrs_p = 5
 
-    Transport.write(
+    Transport.I2C.write(
       transport,
       @ctrl_meas_register,
       <<osrs_t::size(3), osrs_p::size(3), mode::size(2)>>
@@ -25,12 +25,12 @@ defmodule BMP280.BMP280Comm do
 
   @spec read_calibration(Transport.t()) :: {:error, any} | {:ok, binary}
   def read_calibration(transport) do
-    Transport.read(transport, @calib00_register, 24)
+    Transport.I2C.read(transport, @calib00_register, 24)
   end
 
   @spec read_raw_samples(Transport.t()) :: {:error, any} | {:ok, BMP280Sensor.raw_samples()}
   def read_raw_samples(transport) do
-    case Transport.read(transport, @press_msb_register, 6) do
+    case Transport.I2C.read(transport, @press_msb_register, 6) do
       {:ok, <<pressure::20, _::4, temp::20, _::4>>} ->
         {:ok, %{raw_pressure: pressure, raw_temperature: temp}}
 

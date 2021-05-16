@@ -20,8 +20,8 @@ defmodule BMP280.BME280Comm do
     # x16 oversampling
     osrs_h = 5
 
-    with :ok <- Transport.write(transport, @ctrl_hum_register, <<osrs_h>>) do
-      Transport.write(
+    with :ok <- Transport.I2C.write(transport, @ctrl_hum_register, <<osrs_h>>) do
+      Transport.I2C.write(
         transport,
         @ctrl_meas_register,
         <<osrs_t::size(3), osrs_p::size(3), mode::size(2)>>
@@ -31,15 +31,15 @@ defmodule BMP280.BME280Comm do
 
   @spec read_calibration(Transport.t()) :: {:error, any} | {:ok, binary}
   def read_calibration(transport) do
-    with {:ok, first_part} <- Transport.read(transport, @calib00_register, 26),
-         {:ok, second_part} <- Transport.read(transport, @calib26_register, 7) do
+    with {:ok, first_part} <- Transport.I2C.read(transport, @calib00_register, 26),
+         {:ok, second_part} <- Transport.I2C.read(transport, @calib26_register, 7) do
       {:ok, first_part <> second_part}
     end
   end
 
   @spec read_raw_samples(Transport.t()) :: {:error, any} | {:ok, BME280Sensor.raw_samples()}
   def read_raw_samples(transport) do
-    case Transport.read(transport, @press_msb_register, 8) do
+    case Transport.I2C.read(transport, @press_msb_register, 8) do
       {:ok, <<pressure::20, _::4, temp::20, _::4, humidity::16>>} ->
         {:ok, %{raw_pressure: pressure, raw_temperature: temp, raw_humidity: humidity}}
 
